@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { auth, loginWithGoogle, logout, db } from "../firebase";
+import { auth, loginWithGoogle, loginWithGithub, logout, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import {
   collection,
@@ -183,17 +183,26 @@ export default function ChatRoom() {
         </form>
       ) : (
         <div className="flex flex-col items-center justify-center py-4 gap-3 bg-zinc-950/40 rounded-xl border border-zinc-800/50">
-          <button
-            onClick={loginWithGoogle}
-            className="flex items-center gap-3 bg-white text-zinc-800 font-medium text-sm px-6 py-2.5 rounded-full shadow-md hover:bg-zinc-100 hover:shadow-lg transition-all duration-200 active:scale-95"
-          >
-            <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              alt="Google logo"
-              className="w-5 h-5"
-            />
-            Login dengan Google
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 w-full justify-center">
+            <button
+              onClick={loginWithGoogle}
+              className="flex items-center gap-3 bg-white text-zinc-800 font-medium text-sm px-6 py-2.5 rounded-full shadow-md hover:bg-zinc-100 hover:shadow-lg transition-all duration-200 active:scale-95"
+            >
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google logo"
+                className="w-5 h-5"
+              />
+              Sign in with Google
+            </button>
+            <button
+              onClick={loginWithGithub}
+              className="flex items-center gap-3 bg-zinc-900 text-white font-medium text-sm px-6 py-2.5 rounded-full shadow-md hover:bg-zinc-800 hover:shadow-lg transition-all duration-200 active:scale-95"
+            >
+              <span className="text-lg">🐙</span>
+              Sign in with GitHub
+            </button>
+          </div>
           <p className="text-xs text-zinc-500">Masuk untuk mulai mengirim pesan ke semua orang</p>
         </div>
       )}

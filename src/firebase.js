@@ -1,6 +1,12 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
+  signOut
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -18,8 +24,10 @@ const app = initializeApp(firebaseConfig);
 
 // Auth
 export const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-export const loginWithGoogle = () => signInWithPopup(auth, provider);
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
+export const loginWithGoogle = () => signInWithPopup(auth, googleProvider);
+export const loginWithGithub = () => signInWithPopup(auth, githubProvider);
 export const logout = () => signOut(auth);
 
 // Firestore
