@@ -16,7 +16,8 @@ export default function ChatRoom() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const dummyRef = useRef(null);
+  // 1. Ref untuk container chat
+  const chatContainerRef = useRef(null);
 
   // Cek status login
   useEffect(() => {
@@ -34,9 +35,11 @@ export default function ChatRoom() {
     return () => unsub();
   }, []);
 
-  // Auto scroll ke bawah saat pesan bertambah
+  // 2. Auto scroll HANYA di dalam container chat (halaman utama tidak terpengaruh)
   useEffect(() => {
-    dummyRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   // Kirim pesan
@@ -99,8 +102,11 @@ export default function ChatRoom() {
         )}
       </div>
 
-      {/* Area Pesan */}
-      <div className="h-80 overflow-y-auto p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/80 mb-4 space-y-4 scrollbar-thin scrollbar-thumb-zinc-700">
+      {/* Area Pesan (3. Ditambahkan ref={chatContainerRef} di sini) */}
+      <div 
+        ref={chatContainerRef} 
+        className="h-80 overflow-y-auto p-4 rounded-xl bg-zinc-950/60 border border-zinc-800/80 mb-4 space-y-4 scrollbar-thin scrollbar-thumb-zinc-700"
+      >
         {loading ? (
           <div className="flex justify-center items-center h-full text-zinc-500 text-sm">
             Memuat pesan...
@@ -160,7 +166,6 @@ export default function ChatRoom() {
             );
           })
         )}
-        <div ref={dummyRef} />
       </div>
 
       {/* Form Input / Login */}
