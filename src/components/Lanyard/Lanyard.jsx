@@ -9,9 +9,9 @@ import * as THREE from 'three';
 import './Lanyard.css';
 
 // Jalur aset bawaan proyek Anda
-const cardGLB = "/portofolio/assets/card.glb";
-const lanyard = "/portofolio/assets/lanyard.png";
-const fotoProfil = "/portofolio/assets/faris2.png";
+const cardGLB = "/assets/card.glb";
+const lanyard = "/assets/lanyard.png";
+const fotoProfil = "/assets/faris2.png";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
