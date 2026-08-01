@@ -10,13 +10,12 @@ import {
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAnGGVAClHzExVj5iuQnRj7v7EuWs7Z-vQ",
-  authDomain: "portofolio-botess0.firebaseapp.com",
-  projectId: "portofolio-botess0",
-  storageBucket: "portofolio-botess0.firebasestorage.app",
-  messagingSenderId: "843691732237",
-  appId: "1:843691732237:web:571371ad9cba2522bd9444",
-  measurementId: "G-M4S7B7HXC8"
+  apiKey: "AIzaSyCMbN4xAa0che7ug-uTwOew7IRjH2eit_s",
+  authDomain: "portofolio-anam.firebaseapp.com",
+  projectId: "portofolio-anam",
+  storageBucket: "portofolio-anam.firebasestorage.app",
+  messagingSenderId: "548415094425",
+  appId: "1:548415094425:web:d41e4be9d22fe231cdc208"
 };
 
 // Init Firebase
