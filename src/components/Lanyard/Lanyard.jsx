@@ -2,7 +2,7 @@
 'use client';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
-import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
+import { useGLTF, useTexture, Environment, Lightformer, Sparkles, Grid } from '@react-three/drei';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
@@ -25,6 +25,34 @@ export default function Lanyard({ position = [0, 0, 30], gravity = [0, -40, 0], 
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
+
+        {/* === ELEMEN BACKGROUND BARU === */}
+        {/* 1. Partikel Melayang (Sparkles) */}
+        <Sparkles 
+          count={70} 
+          scale={[15, 15, 15]} 
+          size={2.5} 
+          speed={0.4} 
+          color="#a855f7" 
+          position={[0, 0, -2]} 
+        />
+
+        {/* 2. Grid 3D Futuristik di Lantai */}
+        <Grid
+          position={[0, -5, -2]}
+          args={[20, 20]}
+          cellSize={0.6}
+          cellThickness={1}
+          cellColor="#444444"
+          sectionSize={3}
+          sectionThickness={1.5}
+          sectionColor="#8b5cf6"
+          fadeDistance={30}
+          fadeStrength={1}
+          infiniteGrid
+        />
+        {/* ============================== */}
+
         <Physics gravity={gravity} timeStep={1 / 60}>
           <Band />
         </Physics>
@@ -45,36 +73,27 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
   const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
   
   const { nodes, materials } = useGLTF(cardGLB);
-const texture = useTexture(lanyard);
+  const texture = useTexture(lanyard);
+  const fotoTexture = useTexture(fotoProfil);
 
-const fotoTexture = useTexture(fotoProfil);
-
-const photoMaterial = useMemo(() => {
-
+  const photoMaterial = useMemo(() => {
     fotoTexture.wrapS = THREE.ClampToEdgeWrapping;
     fotoTexture.wrapT = THREE.ClampToEdgeWrapping;
-
     fotoTexture.flipY = false;
-
     fotoTexture.center.set(0.8, 0.5);
-
     fotoTexture.rotation = 0;
-
     fotoTexture.repeat.set(0.99, 0.99);
-
     fotoTexture.offset.set(0.23, 0.10);
-
     fotoTexture.needsUpdate = true;
 
     return new THREE.MeshPhysicalMaterial({
-        map: fotoTexture,
-        roughness: 0.35,
-        metalness: 0,
-        clearcoat: 1,
-        clearcoatRoughness: 0.08,
+      map: fotoTexture,
+      roughness: 0.35,
+      metalness: 0,
+      clearcoat: 1,
+      clearcoatRoughness: 0.08,
     });
-
-}, [fotoTexture]);
+  }, [fotoTexture]);
 
   const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]));
   const [dragged, drag] = useState(false);
@@ -155,28 +174,24 @@ const photoMaterial = useMemo(() => {
             onPointerUp={(e) => (e.target.releasePointerCapture(e.pointerId), drag(false))}
             onPointerDown={(e) => (e.target.setPointerCapture(e.pointerId), drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation()))))}>
             <group>
+              {/* kartu */}
+              <mesh
+                geometry={nodes.card.geometry}
+                material={materials.card}
+              />
 
-    {/* kartu */}
-
-    <mesh
-        geometry={nodes.card.geometry}
-        material={materials.card}
-    />
-
-    {/* foto */}
-
-    <mesh geometry={nodes.card.geometry}>
-    <meshPhysicalMaterial
-        map={fotoTexture}
-        map-anisotropy={16}
-        clearcoat={1}
-        clearcoatRoughness={0.15}
-        roughness={0.5}
-        metalness={0.1}
-    />
-    </mesh>
-
-</group>
+              {/* foto */}
+              <mesh geometry={nodes.card.geometry}>
+                <meshPhysicalMaterial
+                  map={fotoTexture}
+                  map-anisotropy={16}
+                  clearcoat={1}
+                  clearcoatRoughness={0.15}
+                  roughness={0.5}
+                  metalness={0.1}
+                />
+              </mesh>
+            </group>
             <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
             <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
           </group>
